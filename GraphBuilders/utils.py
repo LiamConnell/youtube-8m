@@ -3,24 +3,6 @@ import numpy as np
 import urllib
 import os
 
-#### PLOTTING
-# def plot(samples):
-#     fig = plt.figure(figsize=(4, 4))
-#     gs = gridspec.GridSpec(4, 4)
-#     gs.update(wspace=0.05, hspace=0.05)
-
-#     for i, sample in enumerate(samples[:16]):
-#         sample = np.array(sample)
-#         ax = plt.subplot(gs[i])
-#         plt.axis('off')
-#         ax.set_xticklabels([])
-#         ax.set_yticklabels([])
-#         ax.set_aspect('equal')
-#         plt.imshow(sample.reshape(28, 28), cmap='Greys_r')
-
-#     return fig
-
-
 #### NN SOUP INGREDIENTS
 class batch_norm(object):
     """Code modification of http://stackoverflow.com/a/33950177"""
@@ -132,75 +114,6 @@ def xavier_init(size):
 
 
 
-
-#### BATCH ITERATOR
-class train_iterator():
-    def __init__(self, data):
-        self.x, self.y = data
-        self.pointer = 0
-    def next_batch(self, N):
-        x = self.x[self.pointer: self.pointer+N]
-        y = self.y[self.pointer: self.pointer+N]
-        self.pointer += N
-        if self.pointer >= self.x.shape[0]:
-            self.pointer = 0
-        return x, y
     
     
     
-    
-    
-    
-    
-    
-    
-def download_file(source_url, destination_path):
-    """Downloads `source_url` onto `destionation_path`."""
-    def _progress(count, block_size, total_size):
-        sys.stderr.write('\r>> Downloading %s %.1f%%' % (
-            source_url, float(count * block_size) / float(total_size) * 100.0))
-        #sys.stderr.flush()
-    urllib.request.urlretrieve(source_url, destination_path)#, _progress)
-    statinfo = os.stat(destination_path)
-    print('Succesfully downloaded', destination_path, statinfo.st_size, 'bytes.')
-    return destination_path
-
-
-def get_data_from_file(filename, has_labels=True):
-    vid_ids, labels, mean_rgb, mean_audio = [], [], [], []
-
-    for example in tf.python_io.tf_record_iterator(filename):
-        tf_example = tf.train.Example.FromString(example)
-
-        vid_ids.append(tf_example.features.feature['id'].bytes_list.value[0].decode(encoding='UTF-8'))
-        labels.append(tf_example.features.feature['labels'].int64_list.value)
-        mean_rgb.append(tf_example.features.feature['mean_rgb'].float_list.value)
-        mean_audio.append(tf_example.features.feature['mean_audio'].float_list.value)
-    return vid_ids, labels, mean_rgb, mean_audio
-
-class BatchIterator:
-    def __init__(self, labels, mean_rgb, mean_audio):
-        r = np.array(mean_rgb)
-        a = np.array(mean_audio)
-        y = np.array(labels)
-        x = np.concatenate([r,a], axis=1)
-        self.x = x
-        self.y = y
-        assert self.x.shape[0] == self.y.shape[0], 'X, Y not same shape'
-        
-        self.pointer = 0
-        self.data_len = self.x.shape[0]
-        self.max_labels = max([max(x) for x in labels])
-    def next_batch(self, n):
-        if self.pointer+n>self.data_len:
-            self.pointer=0
-        y_mb = self.y[self.pointer:self.pointer+n]
-        x_mb = self.x[self.pointer:self.pointer+n]
-        self.pointer += n
-        return x_mb, y_mb
-    
-
-    
-
-        
-        
