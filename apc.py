@@ -141,7 +141,7 @@ class AveragePrecisionCalculator(object):
     return ap
 
   @staticmethod
-  def ap(predictions, actuals):
+  def ap(predictions, actuals, n=20):
     """Calculate the non-interpolated average precision.
     Args:
       predictions: a numpy 1-D array storing the sparse prediction scores.
@@ -157,7 +157,7 @@ class AveragePrecisionCalculator(object):
     """
     return AveragePrecisionCalculator.ap_at_n(predictions,
                                               actuals,
-                                              n=None)
+                                              n=n)
 
   @staticmethod
   def ap_at_n(predictions, actuals, n=20, total_num_positives=None):

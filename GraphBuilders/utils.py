@@ -3,6 +3,8 @@ import numpy as np
 import urllib
 import os
 
+import tensorflow.contrib.slim as slim
+
 #### NN SOUP INGREDIENTS
 class batch_norm(object):
     """Code modification of http://stackoverflow.com/a/33950177"""

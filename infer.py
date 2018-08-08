@@ -42,7 +42,7 @@ pred = graph.get_tensor_by_name("pred/add:0")
 
 # INFER and WRITE CSV
 datadir = '/home/ec2-user/data/yt8m/test/'
-tempfile = '/home/ec2-user/data/yt8m/test_all/xx.tfrecord'
+tempfile = '/home/ec2-user/data/yt8m/tempfiledir/xx.tfrecord'
 outfile = 'out/'+ str(datetime.datetime.now())+'.csv'
 
 with open(outfile, 'w') as f:

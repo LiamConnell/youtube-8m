@@ -72,7 +72,7 @@ files = [f for f in download_plan['files'].keys()]
 ct = 0
 start = datetime.datetime.now()
 loss_plt = []
-for f in files[:num_files]:
+for f in files[:min(len(files),num_files)]:
     ct+=1
     print('starting file {} of {}'.format(ct, len(files)))
     print('its been this much time: {}'.format(datetime.datetime.now()-start))
